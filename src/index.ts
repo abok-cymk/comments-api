@@ -6,6 +6,7 @@ import { z } from 'zod';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
 import { authMiddleware } from './middleware/auth';
 import {
   createCommentSchema,
@@ -19,6 +20,13 @@ const PORT = process.env.PORT || 3000;
 const prisma = new PrismaClient();
 const { window } = new JSDOM('');
 const domPurify = DOMPurify(window);
+
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:5173/comments-frontend', // Allow frontend origin
+  credentials: true, // Allow cookies/auth headers
+};
+app.use(cors(corsOptions));
 
 // Rate limiter: 100 requests per 15 minutes per IP
 const commentLimiter = rateLimit({
