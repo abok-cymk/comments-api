@@ -26,7 +26,6 @@ npm-debug.log*
 /dist
 /.next
 /out
-.prisma
 
 # IDEs and editors
 /.idea
