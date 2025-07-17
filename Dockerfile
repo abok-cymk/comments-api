@@ -7,7 +7,6 @@ COPY prisma ./prisma/
 
 RUN npm install
 RUN apk add --no-cache openssl openssl-dev
-RUN npx prisma generate
 
 COPY . .
 

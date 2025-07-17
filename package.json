@@ -4,8 +4,7 @@
   "description": "Backend API for interactive comments section",
   "main": "dist/index.js",
   "scripts": {
-    "start": "npm run prepare && node dist/index.js",
-    "prepare": "npm run prisma:generate && npm run prisma:deploy && npm run prisma:seed",
+    "start": "npm run prisma:generate && npm run prisma:deploy && npm run prisma:seed && node dist/index.js",
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts",
