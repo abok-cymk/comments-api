@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  email     String?   @unique
+  password  String?
+  imagePng  String?
+  imageWebp String?
+  comments  Comment[]
+  votes     Vote[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Comment {
+  id         Int       @id @default(autoincrement())
+  content    String
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
+  parentId   Int?
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies    Comment[] @relation("CommentReplies")
+  votes      Vote[]
+  score      Int       @default(0)
+  replyingTo String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Vote {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  commentId Int
+  voteType  String   @default("up") // "up" or "down"
+  user      User     @relation(fields: [userId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, commentId]) // Prevent duplicate votes by the same user on the same comment
+}
